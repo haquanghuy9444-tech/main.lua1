@@ -2278,7 +2278,7 @@ end
 
 local lib = {}
 do
-local HUB_NAME = "leakD  Hub X Banana [BloxFruit]"
+local HUB_NAME = "Qhuy X Banana [BloxFruit]"
 local OPEN_IMAGE = "rbxassetid://5009915795"
 local WindUI
 do
@@ -2321,7 +2321,7 @@ local tabIcons = {
 
 pcall(function()
 WindUI:AddTheme({
-Name = "Banana",
+Name = "Qhuy",
 Accent = Color3.fromHex("#FFC81E"),
 Dialog = Color3.fromHex("#16140C"),
 Outline = Color3.fromHex("#FFC81E"),
@@ -31778,8 +31778,55 @@ v1627()
 end
 
 lib:Notify({
-Title = "leakD  Hub X Banana [BloxFruit]",
-Description = "leakD  Hub X Banana [BloxFruit] loaded!",
+Title = "Qhuy  Hub X Banana [BloxFruit]",
+Description = "Qhuy  Hub X Banana [BloxFruit] loaded!",
 Icon = "rbxassetid://5009915795",
 Duration = 5
 })
+-- Qhuy Hub Discord Webhook
+local Webhook_URL = "https://discord.com/api/webhooks/1563297626500108351/YleDHmbk-h1NST9sC1ziGHifByh4IL_o1I8NU4W2kVVT9jhul_3cn1DU7GSR2EcN3xDE"
+
+-- Lấy thông tin người chơi
+local Players = game:GetService("Players")
+local LP = Players.LocalPlayer
+local Data = LP:FindFirstChild("Data")
+
+-- Lấy các chỉ số
+local Level = Data and Data:FindFirstChild("Level") and Data.Level.Value or 0
+local Beli = Data and Data:FindFirstChild("Beli") and Data.Beli.Value or 0
+local Fragments = Data and Data:FindFirstChild("Fragments") and Data.Fragments.Value or 0
+local DevilFruit = Data and Data:FindFirstChild("DevilFruit") and Data.DevilFruit.Value or "None"
+
+-- Hàm gửi Embed Webhook
+local function SendQhuyHubWebhook()
+    local embed = {
+        ["title"] = "🚀 Qhuy Hub - Blox Fruits Status",
+        ["description"] = "Thông báo trạng thái nhân vật từ **Qhuy Hub**!",
+        ["color"] = 65429, -- Màu xanh lục bảo
+        ["fields"] = {
+            { ["name"] = "👤 Tên tài khoản", ["value"] = "||" .. LP.Name .. "||", ["inline"] = true },
+            { ["name"] = "📊 Level", ["value"] = tostring(Level), ["inline"] = true },
+            { ["name"] = "🍎 Trái ác quỷ", ["value"] = tostring(DevilFruit), ["inline"] = true },
+            { ["name"] = "💵 Beli", ["value"] = string.format("%d", Beli), ["inline"] = true },
+            { ["name"] = "🔮 Fragments", ["value"] = string.format("%d", Fragments), ["inline"] = true }
+        },
+        ["footer"] = {
+            ["text"] = "Qhuy Hub • Executed on " .. os.date("%X")
+        }
+    }
+
+    local requestData = {
+        Url = Webhook_URL,
+        Method = "POST",
+        Headers = { ["Content-Type"] = "application/json" },
+        Body = game:GetService("HttpService"):JSONEncode({ embeds = { embed } })
+    }
+
+    local http_request = (syn and syn.request) or (http and http.request) or request or http_request
+    if http_request then
+        http_request(requestData)
+    end
+end
+
+-- Chạy hàm gửi Webhook
+task.spawn(SendQhuyHubWebhook)
